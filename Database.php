@@ -1,5 +1,7 @@
 <?php
-class Database {
+
+class Database
+{
     private $host = 'localhost';
     private $db = 'todo_list';
     private $user = 'abdurashid';
@@ -7,7 +9,8 @@ class Database {
     private $charset = 'utf8mb4';
     public $pdo;
 
-    public function __construct() {
+    public function __construct()
+    {
         $dsn = "mysql:host={$this->host};dbname={$this->db};charset={$this->charset}";
         $options = [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
