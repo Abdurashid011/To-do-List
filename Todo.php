@@ -26,7 +26,7 @@ class Todo
         $stmt = $this->pdo->prepare('SELECT completed FROM todos WHERE id = ?');
         $stmt->execute([$id]);
         $todo = $stmt->fetch();
-        $newStatus = $todo['completed'] ? 0 : 1;  // Boolean qiymatni 0 yoki 1 ga aylantirish
+        $newStatus = $todo['completed'] ? 0 : 1;
 
         $stmt = $this->pdo->prepare('UPDATE todos SET completed = ? WHERE id = ?');
         $stmt->execute([$newStatus, $id]);

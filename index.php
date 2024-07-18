@@ -1,8 +1,8 @@
 <?php
-require 'Database.php';
+require 'DB.php';
 require 'Todo.php';
-$database = new Database();
-$todo = new Todo($database->pdo);
+$database = DB::connect();
+$todo = new Todo($database);
 $todos = $todo->getTodos();
 ?>
 <!DOCTYPE html>

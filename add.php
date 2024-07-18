@@ -1,9 +1,8 @@
 <?php
-require 'Database.php';
+require 'DB.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $database = new Database();
-    $pdo = $database->pdo;
+    $pdo = DB::connect();
 
     $stmt = $pdo->prepare('INSERT INTO todos (title) VALUES (?)');
     $stmt->execute([$_POST['title']]);
