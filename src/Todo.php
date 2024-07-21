@@ -15,14 +15,11 @@ class Todo
         return $stmt->fetchAll();
     }
 
-
     public function addTodo($title)
     {
         $stmt = $this->pdo->prepare('INSERT INTO todos (title) VALUES (?)');
         $stmt->execute([$title]);
     }
-
-
 
     public function toggleTodoStatus($id)
     {
