@@ -17,4 +17,3 @@ class DB
         return $pdo;
     }
 }
-
