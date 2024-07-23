@@ -16,35 +16,53 @@ $client = new Client(['base_uri' => $tgApi]);
 
 $update = json_decode(file_get_contents('php://input'));
 
+
+$user = new User();
+
+$path = parse_url($_SERVER['REQUEST_URI'])['path'];
+
+if (isset($update->update_id)) {
+    require 'bot.php';
+} else {
+    switch($path) {
+        case '/add':
+            $user->saveAdd($update->text);
+            break;
+        case '/getAll':
+            print_r($user->SendAllUsers());
+            break;
+        case '/delete':
+            $user->saveDelete(($update->text)-1);
+            break;
+        case '/check':
+            $user->saveCheck(($update->text)-1);
+            break;
+        case '/uncheck':
+            $user->saveUncheck(($update->text)-1);
+            break;
+        default:
+            echo "Not found";
+            break;
+    }
+}
+
+
 if (isset($update->message)) {
     $message = $update->message->text;
     $chat_id = $update->message->chat->id;
     $text = $update->message->text;
 
-    $keyboard = [
-        ['➕Add Task', '📋Get All Tasks'],
-        ['✅Check Task', '❎Uncheck Task'],
-        ['🗑Delete Task']
-    ];
-
-    $reply_markup = json_encode([
-        'keyboard' => $keyboard,
-        'resize_keyboard' => true,
-        'one_time_keyboard' => true
-    ]);
-
     if ($text === '/start') {
         $client->post('sendMessage', [
             'form_params' => [
                 'chat_id' => $chat_id,
-                'text' => 'Welcome! Choose an option:',
-                'reply_markup' => $reply_markup
+                'text' => 'welcome'
             ]
         ]);
         return;
     }
 
-    if ($text === 'Add Task') {
+    if ($text === '/add') {
         $user->addTask('add');
         $client->post('sendMessage', [
             'form_params' => [
@@ -55,29 +73,29 @@ if (isset($update->message)) {
         return;
     }
 
-    if ($text === 'Check Task') {
+    if ($text === '/check') {
         $user->checkTask('check');
         $client->post('sendMessage', [
             'form_params' => [
                 'chat_id' => $chat_id,
-                'text' => 'Enter the number to check'
+                'text' => 'Enter the number check'
             ]
         ]);
         return;
     }
 
-    if ($text === 'Uncheck Task') {
+    if ($text === '/uncheck') {
         $user->uncheckTask('uncheck');
         $client->post('sendMessage', [
             'form_params' => [
                 'chat_id' => $chat_id,
-                'text' => 'Enter the number to uncheck'
+                'text' => 'Enter the number uncheck'
             ]
         ]);
         return;
     }
 
-    if ($text === 'Get All Tasks') {
+    if ($text === '/get') {
         $tasks = $user->SendAllUsers();
         $responseText = '';
         $count = 1;
@@ -99,14 +117,15 @@ if (isset($update->message)) {
             ]
         ]);
         return;
+
     }
 
-    if ($text === 'Delete Task') {
+    if ($text === '/delete') {
         $user->writeDelete('delete');
         $client->post('sendMessage', [
             'form_params' => [
                 'chat_id' => $chat_id,
-                'text' => 'Enter the number to delete'
+                'text' => 'Enter the number delete'
             ]
         ]);
         return;
@@ -147,7 +166,7 @@ if ($text) {
         $client->post('sendMessage', [
             'form_params' => [
                 'chat_id' => $chat_id,
-                'text' => 'Task unchecked successfully'
+                'text' => 'Task Unchecked successfully'
             ]
         ]);
         return;
