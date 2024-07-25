@@ -9,10 +9,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['action'])) {
         switch ($_POST['action']) {
             case 'add':
-                $todo->addTodo($_POST['title']);
+                $todo->saveTodo($_POST['title']);
                 break;
             case 'toggle':
-                $todo->toggleTodoStatus((int)$_POST['id']);
+                $todo->toggle((int)$_POST['id']);
                 break;
         }
     }
