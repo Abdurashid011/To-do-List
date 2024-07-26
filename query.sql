@@ -6,7 +6,7 @@ CREATE TABLE users (
 
            id INT AUTO_INCREMENT PRIMARY KEY,
            chat_id BIGINT,
-           status VARCHAR(32);
+           status VARCHAR(32)
 );
 
 CREATE TABLE todos (
