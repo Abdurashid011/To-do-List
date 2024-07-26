@@ -7,7 +7,7 @@ class Bot extends DB
     private PDO $pdo;
     public $http;
 
-    const string TOKEN = "7346592725:AAGeHRRLzone7-nWCVZR5tpZMZlOvt5WCrY";
+    const string TOKEN = "7285834378:AAFZnk2Sap7l5AqrvBQRtBDt6j4Fi8HtbjA";
     const string REQUIEST_API = "https://api.telegram.org/bot" . self::TOKEN . "/";
     public function __construct()
     {
