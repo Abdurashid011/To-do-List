@@ -24,6 +24,7 @@
         </div>
     </form>
     <ul class="list-group">
+        <?php global $todos?>
         <?php foreach ($todos as $todo): ?>
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 <form action="actions.php" method="POST" class="mr-3">

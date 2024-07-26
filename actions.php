@@ -20,5 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $todo->deleteTodo((int)$_GET['id']);
 }
 
+header('Content-Type: application/json, UTF-8');
 header('Location: index.php');
 exit;

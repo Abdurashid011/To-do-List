@@ -15,7 +15,7 @@ class User extends DB
         $check_user->execute();
         if (!$check_user->fetch()) {
             $save_user = $this->pdo->prepare("INSERT INTO users (chat_id) VALUES (:chat_id)");
-            $save_user->bindParam(':chat_id', $chatId);
+            $save_user->bindParam(':chat_id', $chatId,PDO::PARAM_INT);
             $save_user->execute();
         }
     }

@@ -6,24 +6,9 @@ require 'vendor/autoload.php';
 
 date_default_timezone_set("Asia/Tashkent");
 
-/*
 $todo = new Todo();
 $todos = $todo->getTodos();
 
-$update = json_decode(file_get_contents('php://input'));
-
-if (isset($update?->update_id)) {
-    require 'bot/bot.php';
-    return;
-}elseif($update){
-    require 'API/api.php';
-    return;
-}
-
-require "view/view.php";
-*/
-
-require 'vendor/autoload.php';
 
 $router = new Router();
 
@@ -37,4 +22,5 @@ if ($router->isTelegramUpdate()) {
     return;
 }
 
-echo 'Web';
+/* ----- Web part ----- */
+require 'view/view.php';
