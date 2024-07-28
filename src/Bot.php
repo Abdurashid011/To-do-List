@@ -7,12 +7,11 @@ class Bot extends DB
     private PDO $pdo;
     public $http;
 
-    const string TOKEN = "7285834378:AAFZnk2Sap7l5AqrvBQRtBDt6j4Fi8HtbjA";
-    const string REQUIEST_API = "https://api.telegram.org/bot" . self::TOKEN . "/";
-    public function __construct()
+    public string $REQUIEST_API = "https://api.telegram.org/bot";
+    public function __construct($token)
     {
         $this->pdo = DB::connect();
-        $this->http = new Client(['base_uri' => self::REQUIEST_API]);
+        $this->http = new Client(['base_uri' => $this->REQUIEST_API.$token . "/"]);
     }
     public function sendMessage(int $chatId, string $text, $reply_markup = null)
     {

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 $user = new User();
-$bot = new Bot();
+$bot = new Bot($_ENV['TOKEN']);
 $router = new Router();
 
 $update = $router->getUpdates();
