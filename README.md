@@ -29,12 +29,12 @@ This project is a simple to-do list application using PHP and MySQL. It allows u
 
 1. Start the local server:
     ```bash
-    php -S localhost:8000
+    php -S localhost:8080
     ```
 
 2. Open your browser and go to:
     ```
-    http://localhost:8000
+    http://localhost:8080
     ```
 
 3. You can now add new tasks, toggle their status, and delete them.
