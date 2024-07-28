@@ -5,7 +5,7 @@ This project is a simple to-do list application using PHP and MySQL. It allows u
 ## Requirements
 
 - PHP 8.3 or higher
-- MySQL 5.7 or higher
+- MySQL 
 - Composer
 
 ## Installation
