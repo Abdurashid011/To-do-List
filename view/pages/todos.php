@@ -12,9 +12,12 @@
     </style>
 </head>
 <body>
+<?php
+require 'view/partials/navbar.php';
+?>
 <div class="container">
     <h1 class="mt-5">To-do List</h1>
-    <form action="actions.php" method="POST" class="mb-3">
+    <form action="/todos" method="POST" class="mb-3">
         <div class="input-group">
             <input type="hidden" name="action" value="add">
             <input type="text" name="title" class="form-control" placeholder="New to-do" required>
@@ -24,10 +27,10 @@
         </div>
     </form>
     <ul class="list-group">
-        <?php global $todos?>
+        <?php global $todos ?>
         <?php foreach ($todos as $todo): ?>
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                <form action="actions.php" method="POST" class="mr-3">
+                <form action="web.php" method="POST" class="mr-3">
                     <input type="hidden" name="action" value="toggle">
                     <input type="hidden" name="id" value="<?php echo $todo['id']; ?>">
                     <input type="checkbox"
@@ -36,7 +39,7 @@
                 <span class="<?php echo $todo['status'] ? 'status' : ''; ?>">
                     <?php echo htmlspecialchars($todo['title']); ?>
                 </span>
-                <a href="actions.php?action=delete&id=<?php echo $todo['id']; ?>"
+                <a href="?action=delete&id=<?php echo $todo['id']; ?>"
                    class="btn btn-danger btn-sm">Delete</a>
             </li>
         <?php endforeach; ?>

@@ -24,4 +24,4 @@ return;
 }
 
 /* ----- Web part ----- */
-require 'view/view.php';
+require 'routes/web.php';

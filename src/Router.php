@@ -15,6 +15,7 @@ class Router
     {
         return $this->updates;
     }
+
     public function isApiCall()
     {
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -36,5 +37,19 @@ class Router
             return true;
         }
         return false;
+    }
+
+    public function get($path, $callback): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_SERVER['REQUEST_URI'] === $path) {
+            $callback();
+        }
+    }
+
+    public function post($path, $callback): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SERVER['REQUEST_URI'] === $path) {
+            $callback();
+        }
     }
 }

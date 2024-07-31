@@ -7,12 +7,14 @@ class Bot extends DB
     private PDO $pdo;
     public $http;
 
-    public string $REQUIEST_API = "https://api.telegram.org/bot";
+    const string REQUIEST_API = "https://api.telegram.org/bot";
+
     public function __construct($token)
     {
         $this->pdo = DB::connect();
-        $this->http = new Client(['base_uri' => $this->REQUIEST_API.$token . "/"]);
+        $this->http = new Client(['base_uri' => self::REQUIEST_API . $token . "/"]);
     }
+
     public function sendMessage(int $chatId, string $text, $reply_markup = null)
     {
         $params = [
@@ -25,18 +27,19 @@ class Bot extends DB
         ]);
 
     }
+
     public function startBot(int $chatId)
     {
         $user = new User();
         $user->saveUser($chatId);
-        $this->sendMessage($chatId,"Welcome");
+        $this->sendMessage($chatId, "Welcome");
     }
 
     public function addHandler(int $chatId)
     {
         $user = new User();
         $user->setStatus($chatId, 'add');
-        $this->sendMessage($chatId,"Pleace enter your task");
+        $this->sendMessage($chatId, "Pleace enter your task");
     }
 
     public function handlerSaveTodo(int $chatId, string $text)
@@ -47,10 +50,10 @@ class Bot extends DB
         $todo = new Todo();
         $todo->saveTodo($text, $user->id);
 
-        $this->sendMessage($chatId,"Task saved");
+        $this->sendMessage($chatId, "Task saved");
     }
 
-    public function prepareButtons($todos, $additional_button=[])
+    public function prepareButtons($todos, $additional_button = [])
     {
         $i = 0;
         $keyboard = [];
@@ -65,7 +68,7 @@ class Bot extends DB
         return $reply_markup;
     }
 
-    public function prepareText($todos):string
+    public function prepareText($todos): string
     {
         $i = 0;
         $text = "";
@@ -75,6 +78,8 @@ class Bot extends DB
         }
         return $text;
     }
+
+    /*
     public function getAllTodos(int $chatId)
     {
         $user = new User();
@@ -86,6 +91,26 @@ class Bot extends DB
         $text = "Your todos: \n" . $this->prepareText($todos);
         $this->sendMessage($chatId,$text, $reply_markup);
     }
+    */
+    public function getAllTodos(int $chatId)
+    {
+        $user = new User();
+        $user = $user->getUserInfo($chatId);
+
+        if (isset($user) && isset($user->id)) {
+            $userId = (int)$user->id;
+
+            $todo = new Todo();
+            $todos = $todo->getAllTodosByUser($userId);
+
+            $reply_markup = $this->prepareButtons($todos, ['text' => '🗑Delete', 'callback_data' => 'delete']);
+            $text = "Your todos: \n" . $this->prepareText($todos);
+            $this->sendMessage($chatId, $text, $reply_markup);
+        } else {
+            throw new Exception("Foydalanuvchi ID topilmadi yoki foydalanuvchi obyekti noto'g'ri yuklangan.");
+        }
+    }
+
 
     // Calkback query
 
@@ -109,7 +134,7 @@ class Bot extends DB
         $todos = $todo->getAllTodosByUser($user->id);
         $reply_markup = $this->prepareButtons($todos);
         $text = "Chuose your todo: \n" . $this->prepareText($todos);
-        $this->sendMessage($chatId,$text, $reply_markup);
+        $this->sendMessage($chatId, $text, $reply_markup);
     }
 
     public function deletedHandler(int $chatId, int $todoId)
