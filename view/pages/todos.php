@@ -1,3 +1,7 @@
+<?php
+require 'view/partials/navbar.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,10 +16,7 @@
     </style>
 </head>
 <body>
-<?php
-require 'view/partials/navbar.php';
-?>
-<div class="container">
+<div class="container mt-4">
     <h1 class="mt-5">To-do List</h1>
     <form action="/todos" method="POST" class="mb-3">
         <div class="input-group">
@@ -30,7 +31,7 @@ require 'view/partials/navbar.php';
         <?php global $todos ?>
         <?php foreach ($todos as $todo): ?>
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                <form action="web.php" method="POST" class="mr-3">
+                <form action="/toggle" method="POST" class="mr-3">
                     <input type="hidden" name="action" value="toggle">
                     <input type="hidden" name="id" value="<?php echo $todo['id']; ?>">
                     <input type="checkbox"
@@ -39,7 +40,7 @@ require 'view/partials/navbar.php';
                 <span class="<?php echo $todo['status'] ? 'status' : ''; ?>">
                     <?php echo htmlspecialchars($todo['title']); ?>
                 </span>
-                <a href="?action=delete&id=<?php echo $todo['id']; ?>"
+                <a href="/delete?id=<?php echo $todo['id']; ?>"
                    class="btn btn-danger btn-sm">Delete</a>
             </li>
         <?php endforeach; ?>
@@ -47,3 +48,5 @@ require 'view/partials/navbar.php';
 </div>
 </body>
 </html>
+
+<!--echo "<a href='?delete={$task['id']}' type='button' class='p-2'><i class='fa-solid fa-trash text-danger'></i></a>";-->

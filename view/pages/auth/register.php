@@ -21,8 +21,6 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Submit (Отправить)</button>
             </form>
-
-
         </div>
     </div>
 </div>

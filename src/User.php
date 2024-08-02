@@ -45,31 +45,72 @@ class User extends DB
         return $user->fetch(PDO::FETCH_OBJ);
     }
 
+
     // **************** Bu yerda registratsiya uchun kodlar yozilgan ****************
-    public function create(string $email, string $password): string
-    {
-        $user = $this->pdo->prepare("SELECT * FROM `users` WHERE `email` = :email");
-        $user->bindParam(':email', $email);
-        $user->bindParam(':password', $password);
-        $user->execute();
-        if (count($user->fetchAll()) > 0) {
-            return 'Email alredy exists';
-        }
-        $stmt = $this->pdo->prepare("INSERT INTO users (email, password) VALUES (:email, :password)");
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':password', $password);
-        $result = $stmt->execute();
 
-        return $result ? "New record created successfully" : "Something went wrong";
-    }
-
-    public function login(string $email, string $password): string
+    public function login(): void
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM `users` WHERE `email` = :email");
+        $email = $_REQUEST['email'];
+        $password = $_REQUEST['password'];
+
+        $stmt = $this->pdo->prepare("SELECT * FROM `users` WHERE `email` = :email AND `password` = :password");
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':password', $password);
         $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result ? 'Logged in successfully' : 'Something went wrong';
+
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user) {
+            $_SESSION['user'] = $user['email'];
+            header("Location: /");
+            exit();
+        }
+        echo 'Email or password is incorrect';
     }
+
+    public function register()
+    {
+        if ($this->isUserExists()) {
+            echo "User already exists";
+            return;
+        }
+
+        $user = $this->create();
+        $_SESSION['user'] = $user['email'];
+        header("Location: /");
+    }
+
+    public function isUserExists(): bool
+    {
+        if (isset($_POST['email'])) {
+            $email = $_POST['email'];
+            $stmt = $this->pdo->prepare("SELECT * FROM `users` WHERE `email` = :email");
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+            return (bool)$stmt->fetch();
+        }
+        return false;
+    }
+
+    public function create()
+    {
+        if (isset($_POST['email']) && isset($_POST['password'])) {
+            $email = $_POST['email'];
+            $password = $_POST['password'];
+
+            $stmt = $this->pdo->prepare("INSERT INTO `users` (`email`, `password`) VALUES (:email, :password)");
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':password', $password);
+            $stmt->execute();
+
+            //Fetch last created user
+            $stmt = $this->pdo->prepare("SELECT * FROM `users` WHERE `email` = :email");
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+    }
+
+
 }
