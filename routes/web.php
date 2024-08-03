@@ -25,8 +25,10 @@ $router->get('/delete', function () {
 
 $router->get('/notes', fn() => require 'view/pages/notes.php');
 
-$router->get('/register', fn() => require 'view/pages/auth/register.php');
-$router->post('/register', fn() => (new User())->register());
-
 $router->get('/login', fn() => require 'view/pages/auth/login.php');
 $router->post('/login', fn() => (new User())->login());
+
+$router->get('/logout', fn() => (new User())->logout());
+
+$router->get('/register', fn() => require 'view/pages/auth/register.php');
+$router->post('/register', fn() => (new User())->register());

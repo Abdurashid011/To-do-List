@@ -1,6 +1,8 @@
 <?php
-require 'view/partials/navbar.php';
-?>
+//if (isset($_SESSION['user'])){
+//    header('Location: /login');
+//}
+//?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,6 +18,9 @@ require 'view/partials/navbar.php';
     </style>
 </head>
 <body>
+<?php
+require 'view/partials/navbar.php';
+?>
 <div class="container mt-4">
     <h1 class="mt-5">To-do List</h1>
     <form action="/todos" method="POST" class="mb-3">
@@ -48,5 +53,3 @@ require 'view/partials/navbar.php';
 </div>
 </body>
 </html>
-
-<!--echo "<a href='?delete={$task['id']}' type='button' class='p-2'><i class='fa-solid fa-trash text-danger'></i></a>";-->

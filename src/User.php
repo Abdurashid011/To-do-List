@@ -70,6 +70,13 @@ class User extends DB
         }
     }
 
+    public function logout()
+    {
+        session_destroy();
+        header("Location: /");
+        exit();
+    }
+
     public function register()
     {
         if ($this->isUserExists()) {
