@@ -19,10 +19,11 @@
                     <label for="password" class="form-label">Password</label>
                     <input type="password" class="form-control" id="password" name="password">
                 </div>
-                <button type="submit" class="btn btn-primary">Submit (Отправить)</button>
+                <?php if($_SESSION["login_error"]): ?>
+                    <?= $_SESSION["login_error"];?>
+                <?php endif;?>
+                <br><button type="submit" class="btn btn-primary">Send (Отправить)</button>
             </form>
-
-
         </div>
     </div>
 </div>

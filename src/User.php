@@ -64,8 +64,10 @@ class User extends DB
             $_SESSION['user'] = $user['email'];
             header("Location: /");
             exit();
+        } else {
+            $_SESSION["login_error"] = 'Email or password is incorrect';
+            header("Location: /login");
         }
-        echo 'Email or password is incorrect';
     }
 
     public function register()
@@ -76,8 +78,14 @@ class User extends DB
         }
 
         $user = $this->create();
-        $_SESSION['user'] = $user['email'];
-        header("Location: /");
+        if ($user) {
+            $_SESSION['user'] = $user['email'];
+            header("Location: /");
+            exit();
+        } else {
+            $_SESSION["login_error"] = 'User already exists';
+            header("Location: /register");
+        }
     }
 
     public function isUserExists(): bool

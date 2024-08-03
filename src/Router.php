@@ -41,7 +41,7 @@ class Router
 
     public function get($path, $callback): void
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_SERVER['REQUEST_URI'] === $path) {
+        if ($_SERVER['REQUEST_METHOD'] === 'GET' && parse_url($_SERVER['REQUEST_URI'])['path'] === $path) {
             $callback();
         }
     }

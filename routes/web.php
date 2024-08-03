@@ -17,13 +17,12 @@ $router->post('/toggle', function () {
     header('Location: /todos');
 });
 
-//$router->get('/delete', function () {
-//   $todo = new Todo();
-//   $todo->deleteTodo((int)$_GET['id']);
-//   header('Location: /todos');
-//});
+$router->get('/delete', function () {
+   $todo = new Todo();
+   $todo->deleteTodo((int)$_GET['id']);
+   header('Location: /todos');
+});
 
-$router->get("/delete?id={$_GET['id']}", fn() => (new Todo())->deleteTodo((int)$_GET['id']) && require "view/pages/todos.php");
 $router->get('/notes', fn() => require 'view/pages/notes.php');
 
 $router->get('/register', fn() => require 'view/pages/auth/register.php');
