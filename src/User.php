@@ -53,14 +53,13 @@ class User extends DB
         $email = $_REQUEST['email'];
         $password = $_REQUEST['password'];
 
-        $stmt = $this->pdo->prepare("SELECT * FROM `users` WHERE `email` = :email AND `password` = :password");
+        $stmt = $this->pdo->prepare("SELECT * FROM `users` WHERE `email` = :email");
         $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':password', $password);
         $stmt->execute();
 
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user) {
+        if ($user && password_verify($password, $user['password'])) {
             $_SESSION['user'] = $user['email'];
             header("Location: /");
             exit();
@@ -80,7 +79,8 @@ class User extends DB
     public function register()
     {
         if ($this->isUserExists()) {
-            echo "User already exists";
+            $_SESSION["login_error"] = 'User already exists';
+            header("Location: /register");
             return;
         }
 
@@ -89,9 +89,6 @@ class User extends DB
             $_SESSION['user'] = $user['email'];
             header("Location: /");
             exit();
-        } else {
-            $_SESSION["login_error"] = 'User already exists';
-            header("Location: /register");
         }
     }
 
@@ -112,6 +109,7 @@ class User extends DB
         if (isset($_POST['email']) && isset($_POST['password'])) {
             $email = $_POST['email'];
             $password = $_POST['password'];
+            $password = password_hash($password, PASSWORD_DEFAULT);
 
             $stmt = $this->pdo->prepare("INSERT INTO `users` (`email`, `password`) VALUES (:email, :password)");
             $stmt->bindParam(':email', $email);

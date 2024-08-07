@@ -15,4 +15,6 @@ CREATE TABLE todos (
             user_id INT,
             title VARCHAR(255),
             status tinyint(1)
+            email VARCHAR(255),
+            password VARCHAR(255)
 );
